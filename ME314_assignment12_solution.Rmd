@@ -94,14 +94,42 @@ output: html_document
 
     a) After aggregating by party for all US presidents since 1960, perform a keyword analysis to identity the top 10 Democrat and top 10 Republican keywords.
     
-    
+```{r}
+data("data_corpus_sotu", package = "quanteda.corpora")
+docvars(data_corpus_sotu, "year") <- as.numeric(format(docvars(data_corpus_sotu, "Date"), "%Y"))
+
+sotu_1960 <- corpus_subset(data_corpus_sotu, year >= 1960)
+
+sotu_dfm <- dfm(sotu_1960, groups = "party", remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+
+sotu_dfm[, 1:10]
+
+twoparty_key <- textstat_keyness(sotu_dfm, target = "Democratic")
+twoparty_key
+```
+
     
     b) Plot this using a keyness plot.
+    
+```{r}
+textplot_keyness(twoparty_key)
+```
+    
     
     **Hint: See the examples from `?textplot_keyness`.
     
 5.  Network analysis
 
     For the same texts from (3) above, plot a network for the terms with a minimum frequency of 0.8.
- 
-    
+
+```{r}
+toks <- sotu_1960 %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_tolower() %>%
+  tokens_remove(stopwords("english"), padding = FALSE)
+myfcm <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(myfcm, 30))
+fcm_select(myfcm, feat, verbose = FALSE) %>%
+  textplot_network(min_freq = 0.8)
+```
+
