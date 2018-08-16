@@ -1,6 +1,6 @@
-# Lab 8: Unsupervised learning
+# Lab 12: More text and network analysis
 
-You should clone this repository to get started with this lab.  The URL to clone is [https://github.com/lse-me314/assignment08](https://github.com/lse-me314/assignment08).  **You can find detailed instructions on how to do this [here](https://lse-me314.github.io/instructions).**
+You should clone this repository to get started with this lab.  The URL to clone is [https://github.com/lse-me314/assignment12](https://github.com/lse-me314/assignment12).  **You can find detailed instructions on how to do this [here](https://lse-me314.github.io/instructions).**
     
 ### Resources
     
