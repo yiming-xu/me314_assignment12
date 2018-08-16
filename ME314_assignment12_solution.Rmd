@@ -4,6 +4,11 @@ author: "Ken Benoit"
 output: html_document
 ---
 
+```{r, message=FALSE}
+library(quanteda, warn.conflicts = FALSE, quietly = TRUE)
+```
+
+
 1.  **Using regular expressions**
     
     Regular expressions are very important concepts in text processing, as they offer
@@ -15,7 +20,6 @@ output: html_document
     This provides an easy way to recover syntactic variations on specific words, without relying
     on a stemmer.  For instance, we could query a regular expression on tax-related words, using: 
     ```{r}
-    require(quanteda, warn.conflicts = FALSE, quietly = TRUE)
     kwic(data_corpus_inaugural, "tax", window = 2, valuetype = "regex")
     ```
     
@@ -31,25 +35,29 @@ output: html_document
     ```
 
     Could we construct a "glob" pattern match for the same two words?
+    
     ```{r}
-    kwic(data_corpus_inaugural, "value?", 2)
+    kwic(data_corpus_inaugural, "value?", window = 2)
     ```
+    
     **No, because the `?` matches any single character.  But here we got lucky, since there were no other words with a single letter following the string `value`.  Had "valuey" (for example) been present in the corpus, the glob search would have returned it.**
     
 2.  **Continuing with dictionaries**
         
     ```{r}
-    hDict <- dictionary(list(articles = list(definite = "the", indefinite = c("a", "an")),
-                             conjuctions = list(coordinating = c("and", "but", "or", "nor", "for", "yet", "so"),
-                                                subordinating = c("although", "because", "since", "unless"))))
+    hDict <- dictionary(list(
+      articles = list(definite = "the", indefinite = c("a", "an")),
+      conjunctions = list(coordinating = c("and", "but", "or", "nor", "for", "yet", "so"),
+                          subordinating = c("although", "because", "since", "unless"))
+    ))
     hDict
     ```
         
-    Now apply this to the `inaugCorpus` object, and examine the resulting features.  What happened to the hierarchies, to make them
+    Now apply this to the `data_corpus_inaugural` object, and examine the resulting features.  What happened to the hierarchies, to make them
     into "features"?  Do the subcategories sum to the two categories from the previous question?
     
     ```{r}
-    inaugHDictDfm <- dfm(inaugCorpus, dictionary = hDict)
+    inaugHDictDfm <- dfm(data_corpus_inaugural, dictionary = hDict)
     head(inaugHDictDfm)
     ```
     **quanteda "flattened" the hierarchical dictionary prior to applying it to the text.**
@@ -76,9 +84,14 @@ output: html_document
     as a thesaurus, and compare the results.
     
     ```{r}
-    posDfm <- dfm(inaugCorpus, thesaurus = posDict)
-    relativeDfm <- tf(posDfm, "prop")
-    Year <- as.integer(docvars(inaugCorpus, "Year"))
+    posDfm <- dfm(data_corpus_inaugural)
+    # Instead using the "thesaurus" argument to `dfm()` you can use
+    # dfm_lookup(exclusive = FALSE).
+    # Also note the "levels" argument which allows to select what level of
+    # the hierarchical dictionary to return.
+    posDfm <- dfm_lookup(posDfm, dictionary = hDict, exclusive = FALSE, levels = 1)
+    relativeDfm <- dfm_weight(posDfm, "prop")
+    Year <- as.integer(docvars(data_corpus_inaugural, "Year"))
     plot(Year, relativeDfm[, "ARTICLES"], 
          ylim = c(0.0, 0.14),          # fix the range so that both sets fit
          pch = 19, col = "blue",  # blue solid points
@@ -105,7 +118,7 @@ sotu_dfm <- dfm(sotu_1960, groups = "party", remove_punct = TRUE, remove_numbers
 sotu_dfm[, 1:10]
 
 twoparty_key <- textstat_keyness(sotu_dfm, target = "Democratic")
-twoparty_key
+head(twoparty_key)
 ```
 
     

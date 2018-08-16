@@ -312,12 +312,146 @@ $(document).ready(function () {
 </div>
 
 
+<pre class="r"><code>library(quanteda, warn.conflicts = FALSE, quietly = TRUE)</code></pre>
 <ol style="list-style-type: decimal">
 <li><p><strong>Using regular expressions</strong></p>
 <p>Regular expressions are very important concepts in text processing, as they offer tools for searching and matching text strings based on symbolic representations. For the dictionary and thesaurus features, we can define equivalency classes in terms of regular expressions. There is an excellent tutorial on regular expressions at <a href="http://www.regular-expressions.info" class="uri">http://www.regular-expressions.info</a>.</p>
 <p>This provides an easy way to recover syntactic variations on specific words, without relying on a stemmer. For instance, we could query a regular expression on tax-related words, using:</p>
-<pre class="r"><code>require(quanteda)
-kwic(data_corpus_inaugural, &quot;tax&quot;, valuetype = &quot;regex&quot;)</code></pre>
+<pre class="r"><code>kwic(data_corpus_inaugural, &quot;tax&quot;, window = 2, valuetype = &quot;regex&quot;)</code></pre>
+<pre><code>##                                                              
+##   [1805-Jefferson, 276]          our internal |    taxes    |
+##   [1805-Jefferson, 322]           among these |    taxes    |
+##   [1805-Jefferson, 438]                sees a | taxgatherer |
+##     [1817-Monroe, 2830]                , that |    taxes    |
+##     [1821-Monroe, 2896]            the direct |     tax     |
+##     [1821-Monroe, 2992]            measure of |  taxation   |
+##     [1821-Monroe, 3066]           or internal |    taxes    |
+##     [1821-Monroe, 3136]          the internal |    taxes    |
+##      [1825-Adams, 1478]             burden of |  taxation   |
+##      [1825-Adams, 2345]          the internal |    taxes    |
+##     [1833-Jackson, 781]       impoverished by |    taxes    |
+##   [1837-VanBuren, 1439]              bear the |  taxation   |
+##       [1845-Polk, 2725]                of the |    taxes    |
+##       [1845-Polk, 2780]         Government to |     tax     |
+##       [1845-Polk, 3004]           and collect |    taxes    |
+##       [1845-Polk, 3227]                  . To |     tax     |
+##       [1845-Polk, 3319]           millions by |   taxing    |
+##       [1845-Polk, 3488]               of such |    taxes    |
+##  [1885-Cleveland, 1291]        of unnecessary |  taxation   |
+##  [1893-Cleveland, 1477]            of Federal |  taxation   |
+##  [1893-Cleveland, 1673]     justification for |   taxing    |
+##  [1893-Cleveland, 1704]                of the |   taxing    |
+##   [1897-McKinley, 1207]             system of |  taxation   |
+##   [1897-McKinley, 1245]          revenue from |    taxes    |
+##   [1897-McKinley, 1270]             of direct |  taxation   |
+##   [1897-McKinley, 1292]           of internal |  taxation   |
+##   [1897-McKinley, 1307]             of tariff |  taxation   |
+##   [1897-McKinley, 1324]           this tariff |  taxation   |
+##    [1901-McKinley, 103]           has reduced |  taxation   |
+##       [1909-Taft, 1039]             motive is |  taxation   |
+##       [1909-Taft, 1152]              kinds of |  taxation   |
+##       [1909-Taft, 1165] graduated inheritance |     tax     |
+##       [1909-Taft, 1209]             burden of |  taxation   |
+##       [1909-Taft, 1397]     another necessary |     tax     |
+##       [1909-Taft, 2404]         of additional |  taxation   |
+##      [1913-Wilson, 570]           of energies |  overtaxed  |
+##     [1913-Wilson, 1024]         principles of |  taxation   |
+##    [1921-Harding, 2006]                at war |  taxation   |
+##    [1921-Harding, 2464]         for lightened |     tax     |
+##   [1925-Coolidge, 2789]             reform of |  taxation   |
+##   [1925-Coolidge, 2839]          making their |     tax     |
+##   [1925-Coolidge, 2999]          reflected in |  taxation   |
+##   [1925-Coolidge, 3003]           and through |  taxation   |
+##   [1925-Coolidge, 3030]           solving our |     tax     |
+##   [1925-Coolidge, 3069]                of any |    taxes    |
+##   [1925-Coolidge, 3113]   only constitutional |     tax     |
+##   [1925-Coolidge, 3116]                is the |     tax     |
+##   [1925-Coolidge, 3201]            . Whenever |    taxes    |
+##   [1925-Coolidge, 3242]          have further |     tax     |
+##   [1925-Coolidge, 3265]             must have |     tax     |
+##   [1925-Coolidge, 3393]             follow in |  taxation   |
+##   [1925-Coolidge, 3594]             and lower |    taxes    |
+##   [1933-Roosevelt, 204]               levels; |    taxes    |
+##      [1981-Reagan, 307]                  by a |     tax     |
+##      [1981-Reagan, 325]                as our |     tax     |
+##     [1981-Reagan, 1444]        families whose |    taxes    |
+##     [1981-Reagan, 1753]          our punitive |     tax     |
+##      [1985-Reagan, 466]            We allowed |    taxes    |
+##      [1985-Reagan, 566]                 that. |     Tax     |
+##     [1985-Reagan, 1264]          simplify our |     tax     |
+##     [1985-Reagan, 1479]            and paying |    taxes    |
+##     [1985-Reagan, 1624]              power to |     tax     |
+##     [1985-Reagan, 1646]             money and |     tax     |
+##        [2001-Bush, 894]           will reduce |    taxes    |
+##       [2013-Obama, 818]            revamp our |     Tax     |
+##       [2017-Trump, 860]                  , on |    taxes    |
+##                   
+##  . These          
+##  some minor       
+##  of the           
+##  are most         
+##  and excise       
+##  all their        
+##  to supply        
+##  , knowing        
+##  ; that           
+##  have been        
+##  to support       
+##  requisite to     
+##  necessary for    
+##  one section      
+##  , duties         
+##  one branch       
+##  lowest the       
+##  as shall         
+##  , having         
+##  . The            
+##  the people       
+##  power.           
+##  , external       
+##  upon foreign     
+##  , except         
+##  , and            
+##  . There          
+##  shall be         
+##  in the           
+##  and the          
+##  must be          
+##  as correct       
+##  as light         
+##  upon Government  
+##  ought not        
+##  and broken       
+##  , and            
+##  , and            
+##  burdens,         
+##  . The            
+##  returns,         
+##  , and            
+##  both directly    
+##  problem is       
+##  which are        
+##  is the           
+##  which ministers  
+##  become burdensome
+##  reduction,       
+##  reform.          
+##  and all          
+##  have contributed 
+##  have risen       
+##  system which     
+##  burden is        
+##  support the      
+##  burden.          
+##  and inflation    
+##  rates have       
+##  system,          
+##  , will           
+##  and spend        
+##  them into        
+##  , to             
+##  Code,            
+##  , on</code></pre>
 <p>What is the result between that command, and the version <code>kwic(data_corpus_inaugural, &quot;tax&quot;)</code>?</p>
 <p>What if we on wanted to construct a regular expression to query only “valued” and “values” but not other variations of the lemma “value”? Could we construct a “glob” pattern match for the same two words?</p></li>
 <li><p><strong>Continuing with dictionaries</strong></p>
@@ -326,10 +460,6 @@ kwic(data_corpus_inaugural, &quot;tax&quot;, valuetype = &quot;regex&quot;)</cod
 <li><p><strong>Getting used to thesauruses</strong></p>
 <p>A “thesaurus” is a list of feature equivalencies specified in the same list format as a dictionary, but which—unlike a dictionary—returns all the features <em>not</em> specified as entries in the thesaurus.</p>
 <p>If we wanted to count pronouns as equivalent, for instance, we could use the thesaurus argument to <code>dfm</code> in order to group all listed prounouns into a single feature labelled “PRONOUN”.</p>
-<pre class="r"><code>require(quanteda, warn.conflicts = FALSE, quietly = TRUE)</code></pre>
-<pre><code>## Package version: 1.3.4</code></pre>
-<pre><code>## Parallel computing: 2 of 8 threads used.</code></pre>
-<pre><code>## See https://quanteda.io for tutorials and examples.</code></pre>
 <pre class="r"><code>mytexts &lt;- c(&quot;We are not schizophrenic, but I am.&quot;, &quot;I bought myself a new car.&quot;)
 myThes &lt;- dictionary(list(pronouns = list(firstp=c(&quot;I&quot;, &quot;me&quot;, &quot;my&quot;, &quot;mine&quot;, &quot;myself&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;, &quot;ours&quot;))))
 myDfm &lt;- dfm(mytexts, thesaurus = myThes)
