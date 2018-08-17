@@ -4,6 +4,11 @@ author: "Ken Benoit"
 output: html_document
 ---
 
+```{r, message=FALSE}
+library(quanteda, warn.conflicts = FALSE, quietly = TRUE)
+```
+
+
 1.  **Using regular expressions**
     
     Regular expressions are very important concepts in text processing, as they offer
@@ -14,9 +19,8 @@ output: html_document
     
     This provides an easy way to recover syntactic variations on specific words, without relying
     on a stemmer.  For instance, we could query a regular expression on tax-related words, using: 
-    ```{r, eval = FALSE}
-    require(quanteda)
-    kwic(data_corpus_inaugural, "tax", valuetype = "regex")
+    ```{r}
+    kwic(data_corpus_inaugural, "tax", window = 2, valuetype = "regex")
     ```
     
     What is the result between that command, and the version `kwic(data_corpus_inaugural, "tax")`?  
@@ -46,7 +50,6 @@ output: html_document
     If we wanted to count pronouns as equivalent, for instance, we could use the thesaurus argument
     to `dfm` in order to group all listed prounouns into a single feature labelled "PRONOUN".
     ```{r}
-    require(quanteda, warn.conflicts = FALSE, quietly = TRUE)
     mytexts <- c("We are not schizophrenic, but I am.", "I bought myself a new car.")
     myThes <- dictionary(list(pronouns = list(firstp=c("I", "me", "my", "mine", "myself", "we", "us", "our", "ours"))))
     myDfm <- dfm(mytexts, thesaurus = myThes)
